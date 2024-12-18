@@ -66,8 +66,15 @@ html {
     margin-bottom: 20px;
 }
 
+.app-container {
+    max-width: 865px;
+    width: auto;
+    margin-inline: auto;
+}
+
 .projects-table {
     width: 100%;
+    table-layout: fixed;
     border-collapse: collapse;
 }
 
