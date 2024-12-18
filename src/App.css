@@ -67,7 +67,6 @@ html {
 }
 
 .app-container {
-    max-width: 865px;
     width: auto;
     margin-inline: auto;
 }
