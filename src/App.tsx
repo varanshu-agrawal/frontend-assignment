@@ -2,12 +2,17 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import ProjectsTable from './components/ProjectsTable.tsx';
 import Pagination from './components/Pagination.tsx';
+import { useSearchParams } from 'react-router-dom';
 import { Project } from './hooks';
 
 function App() {
     const [data, setData] = useState<Project[]>([]);
-    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [searchParams, setSearchParams] = useSearchParams();
+
     const recordsPerPage = 5;
+
+    const currentPageFromUrl = parseInt(searchParams.get('page') || '1', 10);
+    const currentPage = isNaN(currentPageFromUrl) || currentPageFromUrl < 1 ? 1 : currentPageFromUrl;
 
     useEffect(() => {
         fetch("https://raw.githubusercontent.com/saaslabsco/frontend-assignment/refs/heads/master/frontend-assignment.json")
@@ -23,11 +28,15 @@ function App() {
     const currentRecords = data.slice(startIndex, startIndex + recordsPerPage);
 
     const goToPreviousPage = () => {
-        setCurrentPage(prev => Math.max(prev - 1, 1));
+        if (currentPage > 1) {
+            setSearchParams({ page: String(currentPage - 1) });
+        }
     };
 
     const goToNextPage = () => {
-        setCurrentPage(prev => Math.min(prev + 1, totalPages));
+        if (currentPage < totalPages) {
+            setSearchParams({ page: String(currentPage + 1) });
+        }
     };
 
     return (
